@@ -1,30 +1,5 @@
-// 配置 marked 选项
-marked.setOptions({
-    highlight: function(code, language) {
-        if (language && hljs.getLanguage(language)) {
-            try {
-                return hljs.highlight(code, { language: language }).value;
-            } catch (err) {
-                console.error('Highlight error:', err);
-                return code;
-            }
-        }
-        return hljs.highlightAuto(code).value;
-    },
-    breaks: true,
-    gfm: true,
-    headerIds: false,
-    mangle: false,
-    smartLists: true,
-    smartypants: false
-});
-
-// 创建自定义渲染器
-const renderer = new marked.Renderer();
-renderer.del = function(text) {
-    return text;
-};
-marked.setOptions({ renderer: renderer });
+// 创建 markdown-it 实例
+const md = window.markdownit();
 
 // 全局变量
 let currentMessageContent = '';
@@ -106,16 +81,29 @@ async function sendMessage() {
                         
                         if (data.content) {
                             let content = data.content;
-                            if (typeof content === 'object') {
-                                content = JSON.stringify(content);
+                            console.log('Received content:', content);
+                            console.log('Type of content:', typeof content);
+                            if (typeof content === 'object' && content !== null && content.hasOwnProperty('content')) {
+                                currentMessageContent += content.content;
+                                console.log('Updated currentMessageContent (object):', currentMessageContent);
+                            } else if (typeof content === 'string') {
+                                console.log('Before markdown-it render:', currentMessageContent);
+                                currentMessageContent += content;
+                                console.log('Updated currentMessageContent (string):', currentMessageContent);
+                                if (typeof currentMessageContent !== 'string') {
+                                    console.error('currentMessageContent is not a string:', typeof currentMessageContent);
+                                } else {
+                                    // 使用 markdown-it 解析内容
+                                    const markdownContent = md.render(currentMessageContent);
+                                    console.log('After markdown-it render:', markdownContent);
+                                    currentMessageDiv.querySelector('.markdown-body').innerHTML = markdownContent;
+                                }
+                            } else {
+                                console.error('Unexpected content type:', typeof content);
                             }
                             
-                            // 累积内容
-                            currentMessageContent += content;
-                            currentMessageContent = currentMessageContent.replace(/\[object Object\]/g, '');
-                            
                             // 更新显示
-                            const markdownContent = marked.parse(currentMessageContent);
+                            const markdownContent = md.render(currentMessageContent);
                             currentMessageDiv.querySelector('.markdown-body').innerHTML = markdownContent;
                             
                             // 高亮代码块
