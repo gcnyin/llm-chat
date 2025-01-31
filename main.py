@@ -75,12 +75,21 @@ async def chat(request: ChatRequest):
                 if chunk.choices[0].delta.content is not None:
                     content = chunk.choices[0].delta.content
                     yield f"data: {json.dumps({'content': content})}\n\n"
-                    await asyncio.sleep(0)
                     
         except Exception as e:
             yield f"data: {json.dumps({'error': str(e)})}\n\n"
     
     return StreamingResponse(generate(), media_type="text/event-stream")
+
+@app.get("/models")
+async def list_models():
+    try:
+        # 调用 OpenAI API 获取所有可用模型
+        response = await client.models.list()
+        models = [model.id for model in response.data]
+        return {"models": models}
+    except Exception as e:
+        return {"error": str(e)}
 
 if __name__ == "__main__":
     import uvicorn
