@@ -45,14 +45,20 @@
 
 ## 运行项目
 
-1. 安装依赖包：
+1. 根据 `.env.local` 文件创建 `.env` 文件，并更新对应的值。例如：
+
+   ```bash
+   cp .env.local .env
+   ```
+
+2. 安装依赖包：
 
    ```bash
    pip install -r requirements.txt
    ```
 
-2. 设置环境变量：
-   在 `.env` 文件中设置以下环境变量：
+3. 设置环境变量：
+   在 `.env` 文件中设置以下环境变量（如果还没有设置）：
 
    ```env
    OPENAI_API_KEY=你的OpenAI API密钥
@@ -60,13 +66,13 @@
    OPENAI_MODEL=gpt-3.5-turbo  # 可选，默认为 gpt-3.5-turbo
    ```
 
-3. 运行项目：
+4. 运行项目：
 
    ```bash
    uvicorn main:app --reload
    ```
 
-4. 访问应用：
+5. 访问应用：
    打开浏览器并访问 `http://localhost:8000` 即可与 AI 助手进行交互。
 
 ## 功能说明
