@@ -48,6 +48,7 @@ html, body {
     border-radius: 10px;
     max-width: 85%;
     word-wrap: break-word;
+    width: fit-content;
 }
 
 .user-message {
@@ -182,6 +183,29 @@ button:hover {
     padding-left: 1rem;
     margin: 0.5rem 0;
     color: #666;
+}
+
+.copy-button {
+    background-color: #5cb85c; /* 绿色 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 8px; /* 调整 padding, 使图标居中 */
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 0.9em; /* 调整字体大小 */
+    transition: background-color 0.3s ease;
+    display: inline-flex; /* 使用 inline-flex 布局, 使图标垂直居中 */
+    align-items: center;
+    justify-content: center;
+}
+
+.copy-button:hover {
+    background-color: #4cae4c; /* 稍微深一点的绿色 */
+}
+
+.copy-button:active {
+    background-color: #449d44; /* 更深的绿色 */
 }
 
 @keyframes loading {
