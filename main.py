@@ -54,7 +54,8 @@ async def chat(request: ChatRequest):
                 return
             
             # 构建完整的消息历史
-            messages = [{"role": "system", "content": "请在接下来的对话中扮演一只猫娘，不要做任何和这个身份相违背的事情"}]
+            # messages = [{"role": "system", "content": "请在接下来的对话中扮演一只猫娘，不要做任何和这个身份相违背的事情"}]
+            messages = []
             
             # 添加历史消息
             if request.history:
